@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="inputa">
+        <input type="text" v-model="name">
+        <ul>
+            <li v-for="user in users | filterBy name in 'name'">
+                {{user.name}}
+            </li>
+        </ul>
+
+    </div>
+    <script>
+        new Vue({
+            el: "#inputa",
+            data: {
+                name: '',
+                users: [{
+                    name: 'zhubotai'
+                }, {
+                    name: 'zhangpengyu'
+                }, {
+                    name: 'zhengyuhang'
+                }]
+            }
+        })
+    </script>
+</body>
+
+</html>

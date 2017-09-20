@@ -3,7 +3,7 @@
     <img src="./assets/logo.png">
     <h1 v-html="zpy"></h1>
     <ul>
-        <li v-for="item in items" v-bind:class="{redclass:item.sex,xxx}">
+     
             {{item.name}}
         </li>
     </ul>
