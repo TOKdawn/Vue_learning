@@ -6,13 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>内部指令</title>
+    <script src="https://unpkg.com/vue"></script>
 </head>
 <style>
 
 </style>
 
 <body>
+    <template id="child-template">
+        <div>
+       <input v-model="msg">
+       <button v-on:click="notify"> 按钮</button>
+       </div>
+   </template>
+    <div id="events-example">
+        <p> Massage:{{messages | json }}</p>
+        <child v-on:child-msg="handleIt"></child>
+    </div>
+
 
 </body>
+<script>
+    Vue.component('child', {
+        template: '#child-template',
+        data: function() {
+            return {
+                msg: 'hello'
+            }
+        },
+        methods: {
+            notify: function() {
+                if (this.msg.trim()) {
+                    this.$dispatch('child-msg', this.msg)
+                    this.msg = ' '
+                }
+            }
+        }
+
+    })
+    var parent = new Vue({
+        el: '#events-example',
+        data: {
+            messages: []
+        },
+        methods: {
+            'handleIt': function() {
+                console.log("a");
+            }
+        }
+    })
+</script>
 
 </html>
