@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>计算器</title>
+    <script src="./vue.js"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font: bold 14px Arial, sans-serif;
+    }
+    
+    html {
+        height: 100%;
+        background: white;
+        background: radial-gradient(circle, #fff 20%, #ccc);
+        background-size: cover;
+    }
+    
+    #calculator {
+        width: 325px;
+        height: auto;
+        margin: 100px auto;
+        padding: 20px 20px 9px;
+        background: #9dd2ea;
+        background: linear-gradient(#9dd2ea, #8bceec);
+        border-radius: 3px;
+        box-shadow: 0px 4px #009de4, 0px 10px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .top span.clear {
+        float: left;
+    }
+    
+    .top .screen {
+        height: 40px;
+        width: 212px;
+        float: right;
+        padding: 0 10px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        box-shadow: inset 0px 4px rgba(0, 0, 0, 0.2);
+        font-size: 17px;
+        line-height: 40px;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        text-align: right;
+        letter-spacing: 1px;
+    }
+    
+    .keys,
+    .top {
+        overflow: hidden;
+    }
+    
+    .keys span,
+    .top span.clear {
+        float: left;
+        position: relative;
+        top: 0;
+        cursor: pointer;
+        width: 66px;
+        height: 36px;
+        background: white;
+        border-radius: 3px;
+        box-shadow: 0px 4px rgba(0, 0, 0, 0.2);
+        margin: 0 7px 11px 0;
+        color: #888;
+        line-height: 36px;
+        text-align: center;
+        user-select: none;
+        transition: all 0.2s ease;
+    }
+    
+    .span2 {
+        float: left;
+        position: relative;
+        top: 0;
+        cursor: pointer;
+        width: 66px;
+        height: 36px;
+        background: #FFF0F5;
+        border-radius: 3px;
+        box-shadow: 0px 4px rgba(0, 0, 0, 0.2);
+        margin: 0 7px 11px 0;
+        color: #888;
+        line-height: 36px;
+        text-align: center;
+        user-select: none;
+        transition: all 0.2s ease;
+    }
+    
+    .keys span.operator {
+        background: #FFF0F5;
+        margin-right: 0;
+    }
+    
+    .keys span.eval {
+        background: #f1ff92;
+        box-shadow: 0px 4px #9da853;
+        color: #888e5f;
+    }
+    
+    .top span.clear {
+        background: #ff9fa8;
+        box-shadow: 0px 4px #ff7c87;
+        color: white;
+    }
+    
+    .keys span:hover {
+        background: #9c89f6;
+        box-shadow: 0px 4px #6b54d3;
+        color: white;
+    }
+    
+    .keys span.eval:hover {
+        background: #abb850;
+        box-shadow: 0px 4px #717a33;
+        color: #ffffff;
+    }
+    
+    .top span.clear:hover {
+        background: #f68991;
+        box-shadow: 0px 4px #d3545d;
+        color: white;
+    }
+    
+    .keys span:active {
+        box-shadow: 0px 0px #6b54d3;
+        top: 4px;
+    }
+    
+    .keys span.eval:active {
+        box-shadow: 0px 0px #717a33;
+        top: 4px;
+    }
+    
+    .top span.clear:active {
+        top: 4px;
+        box-shadow: 0px 0px #d3545d;
+    }
+    
+    .screen p {
+        float: left;
+        font-size: 17px;
+        line-height: 40px;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        text-align: right;
+        letter-spacing: 1px;
+    }
+</style>
+
+<body>
+    <div id="zvue">
+        <div id="calculator">
+            <div class="top">
+
+                <span class="clear" @click=eliminate()>C</span>
+
+                <div class="screen">
+                    <p>{{show}}</p>
+                    {{results}}
+                </div>
+
+            </div>
+
+            <div class="keys">
+                <span @click=triangle(1)>sin</span>
+                <span @click=triangle(2)>cos</span>
+                <span @click=triangle(3)>tan</span>
+
+                <span class="operator" @click=addsymbol(5)>^</span>
+
+                <span @click=addnum(7)>7</span>
+
+                <span @click=addnum(8)>8</span>
+
+                <span @click=addnum(9)>9</span>
+
+                <span class="operator" @click=addsymbol(1)>+</span>
+
+                <span @click=addnum(4)>4</span>
+
+                <span @click=addnum(5)>5</span>
+
+                <span @click=addnum(6)>6</span>
+
+                <span class="operator" @click=addsymbol(2)>-</span>
+
+                <span @click=addnum(1)>1</span>
+
+                <span @click=addnum(2)>2</span>
+                <span @click=addnum(3)>3</span>
+                <span class="operator" @click=addsymbol(4)>/</span>
+                <span @click=addnum(0)>0</span>
+                <span @click=addpoint()>.</span>
+                <span class="eval" @click=eval()>=</span>
+                <span class="operator" @click=addsymbol(3)>x</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    var text = new Vue({
+        el: "#zvue",
+        data: {
+            results: 0,
+            newnum: 0,
+            oldnum: 0,
+            symbol: 0,
+            /**********************  + => 1
+                                     - => 2 
+                                     * => 3
+                                     / => 4 
+                                     ^ => 5
+                                   sin => 6
+                                   cos => 7
+                                   tan => 8
+            ******************************/
+            point: 0,
+            show: '',
+        },
+        methods: {
+            addnum: function(num) {
+                // 输入数字处理,无小数点则原始数*10加新数
+                // 有小数点原始数据加上0.1的小数点位次方加新数
+                // 核心思想,当前输入的数字都储存在newnum
+                // 当点击运算符号时把当前的newnum存入oldnum作为代处理的数据
+                // 点击=取出oldnum与newnum和运算符,进行运算.
+                // 输出结果后要把结果存入oldnum,置空newnum.
+                // 点击运算符的时候要先检测是否newnum和oldnum是不是都不为0
+                // 如果都不为零表示已经有运算可以进行 则进行计算
+                // 
+                this.show = '';
+                if (this.point) {
+                    this.newnum = this.newnum + num * Math.pow(0.1, this.point);
+                    this.results = this.newnum;
+                    this.point += 1;
+                } else {
+                    this.newnum = this.newnum * 10 + num;
+                    this.results = this.newnum;
+                }
+
+
+            },
+            addpoint: function() {
+                this.show = '.';
+                this.point = 1;
+            },
+            addsymbol: function(symbol) {
+                if (this.newnum !== 0 && this.oldnum != 0) { // 连续按符号
+                    switch (this.symbol) {
+                        case 1:
+                            this.results = this.oldnum + this.newnum;
+                            this.oldnum = this.results;
+                            this.newnum = 0;
+                            break;
+                        case 2:
+                            this.results = this.oldnum - this.newnum;
+                            this.oldnum = this.results;
+                            this.newnum = 0;
+
+                            break;
+                        case 3:
+                            this.results = this.oldnum * this.newnum;
+                            this.oldnum = this.results;
+                            this.newnum = 0;
+                            break;
+                        case 4:
+                            if (this.newnum == 0) {
+                                this.results = "false";
+                            }
+                            this.results = this.oldnum / this.newnum;
+                            this.oldnum = this.results;
+                            this.newnum = 0;
+                            break;
+                        case 5:
+                            this.results = Math.pow(this.oldnum, this.newnum);
+                            this.oldnum = this.results;
+                            this.newnum = 0;
+                            break;
+                    }
+                }
+                switch (symbol) {
+                    case 1:
+                        this.show = '+';
+                        break;
+                    case 2:
+                        this.show = '-';
+                        break;
+                    case 3:
+                        this.show = 'x';
+                        break;
+                    case 4:
+                        this.show = '/';
+                        break;
+                    case 5:
+                        this.show = '^';
+                        break;
+
+                }
+                if (this.newnum !== 0) { // 算出结果后直接按符号
+                    this.oldnum = this.newnum;
+                }
+                this.newnum = 0;
+                this.point = 0;
+                this.symbol = symbol;
+            },
+            eval: function() {
+                switch (this.symbol) {
+                    case 1:
+                        this.results = this.oldnum + this.newnum;
+                        this.oldnum = this.results;
+                        this.newnum = 0;
+                        break;
+                    case 2:
+                        this.results = this.oldnum - this.newnum;
+                        this.oldnum = this.results;
+                        this.newnum = 0;
+                        break;
+                    case 3:
+                        this.results = this.oldnum * this.newnum;
+                        this.oldnum = this.results;
+                        this.newnum = 0;
+                        break;
+                    case 4:
+                        if (this.newnum == 0) {
+                            this.results = "false";
+                        }
+                        this.results = this.oldnum / this.newnum;
+                        this.oldnum = this.results;
+                        this.newnum = 0;
+                        break;
+                    case 5:
+                        this.results = Math.pow(this.oldnum, this.newnum);
+                        this.oldnum = this.results;
+                        this.newnum = 0;
+                        break;
+                }
+            },
+            triangle: function(type) {
+                switch (type) {
+                    case 1:
+                        this.newnum = Math.sin(this.newnum);
+                        this.results = this.newnum;
+                    case 2:
+                        this.newnum = Math.cos(this.newnum);
+                        this.results = this.newnum;
+                    case 3:
+                        this.newnum = Math.tan(this.newnum);
+                        this.results = this.newnum;
+                }
+            },
+            eliminate: function() {
+                this.oldnum = 0;
+                this.newnum = 0;
+                this.point = 0;
+                this.results = this.oldnum;
+            }
+        }
+    })
+</script>
+
+</html>
