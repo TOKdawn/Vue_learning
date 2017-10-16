@@ -209,6 +209,7 @@
 
 </body>
 <script>
+    console.log("  输入数字处理, 无小数点则原始数 * 10 加新数 有小数点原始数据加上0 .1 的小数点位次方加新数 核心思想, 当前输入的数字都储存在newnum 当点击运算符号时把当前的newnum存入oldnum作为代处理的数据 点击 = 取出oldnum与newnum和运算符, 进行运算.输出结果后要把结果存入oldnum, 置空newnum.点击运算符的时候要先检测是否newnum和oldnum是不是都不为0 如果都不为零表示已经有运算可以进行 则进行计算 ");
     var text = new Vue({
         el: "#zvue",
         data: {
@@ -230,15 +231,7 @@
         },
         methods: {
             addnum: function(num) {
-                // 输入数字处理,无小数点则原始数*10加新数
-                // 有小数点原始数据加上0.1的小数点位次方加新数
-                // 核心思想,当前输入的数字都储存在newnum
-                // 当点击运算符号时把当前的newnum存入oldnum作为代处理的数据
-                // 点击=取出oldnum与newnum和运算符,进行运算.
-                // 输出结果后要把结果存入oldnum,置空newnum.
-                // 点击运算符的时候要先检测是否newnum和oldnum是不是都不为0
-                // 如果都不为零表示已经有运算可以进行 则进行计算
-                // 
+
                 this.show = '';
                 if (this.point) {
                     this.newnum = this.newnum + num * Math.pow(0.1, this.point);
@@ -248,8 +241,6 @@
                     this.newnum = this.newnum * 10 + num;
                     this.results = this.newnum;
                 }
-
-
             },
             addpoint: function() {
                 this.show = '.';
